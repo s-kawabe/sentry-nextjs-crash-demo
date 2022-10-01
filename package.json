@@ -1,0 +1,61 @@
+{
+  "name": "next-ts-template",
+  "private": true,
+  "scripts": {
+    "deduplicate": "npx yarn-deduplicate yarn.lock",
+    "dev": "next dev",
+    "dev-ip": "next dev --hostname 0.0.0.0",
+    "path": "pathpida --ignorePath .gitignore --watch",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:eslint": "eslint --cache .",
+    "lint:prettier": "prettier --check .",
+    "test": "jest --watch",
+    "test-cov": "jest --collectCoverage=true --coverageReporters=json-summary",
+    "component": "scaffdog generate component"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "5.1.4",
+    "@mantine/hooks": "5.1.4",
+    "@mantine/next": "5.1.4",
+    "next": "12.2.5",
+    "nprogress": "0.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-error-boundary": "3.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/react": "13.3.0",
+    "@types/node": "18.7.2",
+    "@types/nprogress": "0.2.0",
+    "@types/react": "18.0.17",
+    "@typescript-eslint/eslint-plugin": "5.20.0",
+    "@typescript-eslint/parser": "5.20.0",
+    "autoprefixer": "^10.4.7",
+    "eslint": "8.21.0",
+    "eslint-config-next": "12.2.5",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "eslint-plugin-tailwindcss": "^3.5.0",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "pathpida": "^0.18.1",
+    "postcss": "^8.4.13",
+    "prettier": "2.7.1",
+    "scaffdog": "1.2.0",
+    "tailwindcss": "^3.0.24",
+    "ts-jest": "28.0.7",
+    "typescript": "4.7.3"
+  }
+}
