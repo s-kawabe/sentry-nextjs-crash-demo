@@ -13,12 +13,26 @@ export type Post = {
   body: string
 }
 
+const sleep = (ms: number) => {
+  return new Promise((resolve) => {
+    return setTimeout(resolve, ms)
+  })
+}
+
+const _reject = (ms: number) => {
+  return new Promise((_, reject) => {
+    return setTimeout(reject, ms)
+  })
+}
+
 export const getPosts = async (apiClients: ApiClients): Promise<Post[]> => {
+  await sleep(1000)
   const res = await apiClients.apiClient.get<Post[]>('/posts')
   return res.data
 }
 
 export const getApiRoutePosts = async (apiClients: ApiClients): Promise<Post[]> => {
+  await sleep(1000)
   const res = await apiClients.apiRoutesClient.get<Post[]>('/posts')
   return res.data
 }

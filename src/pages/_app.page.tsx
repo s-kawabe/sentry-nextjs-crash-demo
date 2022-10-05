@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import nprogress from 'nprogress'
 import { useEffect, useMemo } from 'react'
 
+import { AppShell } from '@/components/layout/AppShell'
 import { ApiClientContext, createApiClient } from '@/libs/jspApiClient'
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })
@@ -33,10 +34,20 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   })
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{
+        colors: {
+          deepBlue: ['#E9EDFC', '#C1CCF6', '#99ABF0'],
+        },
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <ApiClientContext.Provider value={apiClients}>
-          <Component {...pageProps} />
+          <AppShell>
+            <Component {...pageProps} />
+          </AppShell>
         </ApiClientContext.Provider>
       </QueryClientProvider>
     </MantineProvider>
