@@ -20,13 +20,7 @@ export const NavButton: FC<Props> = ({ targetPath, children, ...rest }) => {
   }
 
   return (
-    <Button
-      color={'gray'}
-      {...rest}
-      sx={() => {
-        return { '&:hover': { backgroundColor: '#868E96' } }
-      }}
-    >
+    <Button color={'gray'} {...rest}>
       {children}
     </Button>
   )

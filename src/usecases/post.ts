@@ -19,12 +19,7 @@ const sleep = (ms: number) => {
   })
 }
 
-const _reject = (ms: number) => {
-  return new Promise((_, reject) => {
-    return setTimeout(reject, ms)
-  })
-}
-
+// safe fatcher
 export const getPosts = async (apiClients: ApiClients): Promise<Post[]> => {
   await sleep(1000)
   const res = await apiClients.apiClient.get<Post[]>('/posts')
@@ -49,4 +44,28 @@ export const useApiRoutePosts = (): UseQueryResult<Post[], unknown> => {
   return useQuery([queryKeys.posts], () => {
     return getApiRoutePosts(apiClient)
   })
+}
+
+// artificially error fetcher
+export const getPostsDangerous = async (apiClients: ApiClients): Promise<Post[]> => {
+  if (Math.random() <= 0.5) throw new Error('something went wrong :( - get posts error')
+  const res = await apiClients.apiClient.get<Post[]>('/posts')
+  return res.data
+}
+
+export const usePostsDangerous = (): UseQueryResult<Post[], unknown> => {
+  const apiClient = useApiClients()
+  return useQuery(
+    [queryKeys.posts],
+    () => {
+      return getPostsDangerous(apiClient).catch((error) => {
+        throw error
+      })
+    },
+    {
+      onError: (error) => {
+        console.log(error)
+      },
+    }
+  )
 }

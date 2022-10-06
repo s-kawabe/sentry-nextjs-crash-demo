@@ -1,11 +1,11 @@
 import 'nprogress/nprogress.css'
 import '@/styles/global.css'
 
-import { MantineProvider } from '@mantine/core'
+import { Center, Loader, MantineProvider } from '@mantine/core'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import nprogress from 'nprogress'
-import { useEffect, useMemo } from 'react'
+import { Suspense, useEffect, useMemo } from 'react'
 
 import { AppShell } from '@/components/layout/AppShell'
 import { ApiClientContext, createApiClient } from '@/libs/jspApiClient'
@@ -17,6 +17,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return new QueryClient({
       defaultOptions: {
         queries: {
+          cacheTime: 0,
+          suspense: true,
           retry: false,
           refetchOnWindowFocus: false,
           refetchOnReconnect: false,
@@ -46,7 +48,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <QueryClientProvider client={queryClient}>
         <ApiClientContext.Provider value={apiClients}>
           <AppShell>
-            <Component {...pageProps} />
+            <Suspense
+              fallback={
+                <Center className="flex-col  items-center w-auto h-full">
+                  <Loader variant="dots" size={'xl'} />
+                </Center>
+              }
+            >
+              <Component {...pageProps} />
+            </Suspense>
           </AppShell>
         </ApiClientContext.Provider>
       </QueryClientProvider>

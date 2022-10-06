@@ -17,7 +17,7 @@ const TopPage: NextPage = () => {
   }, [])
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <>
       <Head>
         <title>Sentry Playground</title>
         <link rel="icon" href="/favicon.ico" />
@@ -37,7 +37,7 @@ const TopPage: NextPage = () => {
           </>
         )}
       </Center>
-    </div>
+    </>
   )
 }
 
