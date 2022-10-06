@@ -46,9 +46,11 @@ export const useApiRoutePosts = (): UseQueryResult<Post[], unknown> => {
   })
 }
 
+type Render = 'CSR' | 'SSR' | 'SSG' | 'ISR'
+
 // artificially error fetcher
-export const getPostsDangerous = async (apiClients: ApiClients): Promise<Post[]> => {
-  if (Math.random() <= 0.5) throw new Error('something went wrong :( - get posts error')
+export const getPostsDangerous = async (apiClients: ApiClients, context: Render): Promise<Post[]> => {
+  if (Math.random() <= 0.5) throw new Error(`something went wrong :( - get posts error, context: ${context}`)
   const res = await apiClients.apiClient.get<Post[]>('/posts')
   return res.data
 }
@@ -58,13 +60,13 @@ export const usePostsDangerous = (): UseQueryResult<Post[], unknown> => {
   return useQuery(
     [queryKeys.posts],
     () => {
-      return getPostsDangerous(apiClient).catch((error) => {
+      return getPostsDangerous(apiClient, 'CSR').catch((error) => {
         throw error
       })
     },
     {
       onError: (error) => {
-        console.log(error)
+        console.error(error)
       },
     }
   )

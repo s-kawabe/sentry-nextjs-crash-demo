@@ -22,7 +22,7 @@ const TopPage: NextPage<Props> = ({ date, data }) => {
       </Head>
       <Center className="flex-col gap-4 w-auto h-auto">
         <>
-          <Alert>This page CSR, renderd at {date}</Alert>
+          <Alert>This page SSR, renderd at {date}</Alert>
           <SimpleGrid cols={3} spacing="xl">
             {data &&
               data.map((post) => {

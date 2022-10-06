@@ -1,6 +1,8 @@
-import { AppShell as MtAppShell, Footer, Group, Header, Navbar, Tooltip } from '@mantine/core'
+import { AppShell as MtAppShell, Button, Footer, Group, Header, Modal, Navbar, Space } from '@mantine/core'
 import Link from 'next/link'
 import type { FC, ReactNode } from 'react'
+import { useState } from 'react'
+import { forwardRef } from 'react'
 
 import { NavButton } from '@/components/ui/NavButton'
 
@@ -9,45 +11,79 @@ type Props = {
 }
 
 export const AppShell: FC<Props> = ({ children }) => {
+  const [opened, setOpened] = useState(false)
+
   return (
-    <MtAppShell
-      padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={'100%'} p="xs">
-          <Buttons />
-        </Navbar>
-      }
-      header={
-        <Header height={60} p="xs" className="flex justify-start items-center text-xl font-bold text-gray-800">
-          Sentry Demo App :)
-        </Header>
-      }
-      footer={
-        <Footer height={80} p="md" className="flex justify-start items-center text-gray-700">
-          Copyright © 2000-2017 ABC inc. All Right Reserved.
-        </Footer>
-      }
-      styles={(theme) => {
-        return {
-          main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+    <>
+      <MtAppShell
+        padding="md"
+        navbar={
+          <Navbar width={{ base: 300 }} height={'100%'} p="xs">
+            <Buttons />
+            <Space h="lg" />
+            <Button
+              className="w-20"
+              onClick={() => {
+                return setOpened(true)
+              }}
+            >
+              ？
+            </Button>
+          </Navbar>
         }
-      }}
-    >
-      {children}
-    </MtAppShell>
+        header={
+          <Header height={60} p="xs" className="flex justify-start items-center text-xl font-bold text-gray-800">
+            Sentry Demo App :)
+          </Header>
+        }
+        footer={
+          <Footer height={80} p="md" className="flex justify-start items-center text-gray-700">
+            Copyright © 2000-2017 ABC inc. All Right Reserved.
+          </Footer>
+        }
+        styles={(theme) => {
+          return {
+            main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+          }
+        }}
+      >
+        {children}
+      </MtAppShell>
+      <Modal
+        size={'600px'}
+        opened={opened}
+        onClose={() => {
+          return setOpened(false)
+        }}
+        title="description"
+      >
+        1. browser → API → success
+        <br />
+        2. getServerSideProps → API → browser → success → browser
+        <br />
+        3. getStaticProps → API → browser → success → browser <br />
+        4. getStaticProps(ISR) → API → browser → success → browser <br />
+        5. browser → API → failure <br />
+        6. browser → API Routes → API → failure → browser
+        <br />
+        7. getServerSideProps → API → failure → browser <br />
+        8. getServerSideProps → API Routes → API → failure → browser <br />
+        9. getStaticProps → API → failure → browser <br />
+        10. getStaticProps(ISR) → API → failure → browser <br />
+      </Modal>
+    </>
   )
 }
 
 const Buttons: FC = () => {
   return (
     <Group spacing={'md'} className="flex flex-col">
-      <Tooltip label="browser→API" position="right">
-        <Link href={'/safe-csr'} passHref>
-          <NavButton targetPath={'/safe-csr'} className="w-full">
-            1. safe-csr
-          </NavButton>
-        </Link>
-      </Tooltip>
+      <Link href={'/safe-csr'}>
+        <NavButton targetPath={'/safe-csr'} className="w-full">
+          1. safe-csr
+        </NavButton>
+      </Link>
+
       <Link href={'/safe-ssr'}>
         <NavButton targetPath={'/safe-ssr'} className="w-full">
           2. safe-ssr
@@ -96,3 +132,14 @@ const Buttons: FC = () => {
     </Group>
   )
 }
+
+const LinkButton = forwardRef<HTMLAnchorElement, { label: string; path: string }>(({ label, path }, ref) => {
+  return (
+    <Link href={path} ref={ref}>
+      <NavButton targetPath={path} className="w-full">
+        {label}
+      </NavButton>
+    </Link>
+  )
+})
+LinkButton.displayName = 'LinkButton'

@@ -1,5 +1,5 @@
 import { Alert, Center, SimpleGrid } from '@mantine/core'
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 
 import { Card } from '@/components/ui/Card'
@@ -13,7 +13,7 @@ type Props = {
   data: Post[]
 }
 
-const TopPage: NextPage<Props> = ({ data, date }) => {
+const TopPage: NextPage<Props> = ({ date, data }) => {
   return (
     <>
       <Head>
@@ -22,7 +22,7 @@ const TopPage: NextPage<Props> = ({ data, date }) => {
       </Head>
       <Center className="flex-col gap-4 w-auto h-auto">
         <>
-          <Alert>This page SSG, renderd at {date}</Alert>
+          <Alert>This page CSR, renderd at {date}</Alert>
           <SimpleGrid cols={3} spacing="xl">
             {data &&
               data.map((post) => {
@@ -35,9 +35,10 @@ const TopPage: NextPage<Props> = ({ data, date }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const apiClient = createApiClient()
   const data = await getPosts(apiClient)
+
   return {
     props: {
       date: day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'),
