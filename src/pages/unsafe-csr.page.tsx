@@ -9,7 +9,7 @@ import { usePostsDangerous } from '@/usecases/post'
 
 const TopPage: NextPage = () => {
   const [date, setDate] = useState('')
-  const { data, isError } = usePostsDangerous()
+  const { data } = usePostsDangerous()
 
   useEffect(() => {
     setDate(day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'))
@@ -22,19 +22,15 @@ const TopPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Center className="flex-col gap-4 w-auto h-auto">
-        {isError ? (
-          <Alert color={'red'}>Oops! something went wrong :(</Alert>
-        ) : (
-          <>
-            <Alert>This page CSR, renderd at {date}</Alert>
-            <SimpleGrid cols={3} spacing="xl">
-              {data &&
-                data.map((post) => {
-                  return <Card key={post.id} {...post} />
-                })}
-            </SimpleGrid>
-          </>
-        )}
+        <>
+          <Alert>This page CSR, renderd at {date}</Alert>
+          <SimpleGrid cols={3} spacing="xl">
+            {data &&
+              data.map((post) => {
+                return <Card key={post.id} {...post} />
+              })}
+          </SimpleGrid>
+        </>
       </Center>
     </>
   )

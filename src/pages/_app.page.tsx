@@ -1,8 +1,9 @@
 import 'nprogress/nprogress.css'
 import '@/styles/global.css'
 
-import { Center, Loader, MantineProvider } from '@mantine/core'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Alert, Center, Loader, MantineProvider } from '@mantine/core'
+import { ErrorBoundary } from '@sentry/nextjs'
+import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import nprogress from 'nprogress'
 import { Suspense, useEffect, useMemo } from 'react'
@@ -48,15 +49,30 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <QueryClientProvider client={queryClient}>
         <ApiClientContext.Provider value={apiClients}>
           <AppShell>
-            <Suspense
-              fallback={
-                <Center className="flex-col  items-center w-auto h-full">
-                  <Loader variant="dots" size={'xl'} />
-                </Center>
-              }
-            >
-              <Component {...pageProps} />
-            </Suspense>
+            <QueryErrorResetBoundary>
+              {({ reset }) => {
+                return (
+                  <ErrorBoundary
+                    fallback={
+                      <Center className="flex-col  items-center w-auto h-full">
+                        <Alert color={'red'}>Oops! something went wrong :(</Alert>
+                      </Center>
+                    }
+                    onReset={reset}
+                  >
+                    <Suspense
+                      fallback={
+                        <Center className="flex-col  items-center w-auto h-full">
+                          <Loader variant="dots" size={'xl'} />
+                        </Center>
+                      }
+                    >
+                      <Component {...pageProps} />
+                    </Suspense>
+                  </ErrorBoundary>
+                )
+              }}
+            </QueryErrorResetBoundary>
           </AppShell>
         </ApiClientContext.Provider>
       </QueryClientProvider>

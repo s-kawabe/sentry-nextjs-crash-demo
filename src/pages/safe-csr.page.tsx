@@ -8,12 +8,14 @@ import { day } from '@/libs/day'
 import { usePosts } from '@/usecases/post'
 
 const TopPage: NextPage = () => {
-  const [date, setDate] = useState('')
   const { data } = usePosts()
+  const [date, setDate] = useState('')
 
   useEffect(() => {
     setDate(day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'))
   }, [])
+
+  console.log(data)
 
   return (
     <>

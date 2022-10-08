@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react'
 
 import { Card } from '@/components/ui/Card'
 import { day } from '@/libs/day'
-import { usePostsDangerous } from '@/usecases/post'
+import { useApiRoutePostsDangerous } from '@/usecases/post'
 
 const TopPage: NextPage = () => {
   const [date, setDate] = useState('')
-  const { data, isError } = usePostsDangerous()
+  const { data, isError } = useApiRoutePostsDangerous()
 
   useEffect(() => {
     setDate(day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'))
@@ -26,7 +26,7 @@ const TopPage: NextPage = () => {
           <Alert color={'red'}>Oops! something went wrong :(</Alert>
         ) : (
           <>
-            <Alert>This page CSR, renderd at {date}</Alert>
+            <Alert>This page CSR(API Routes), renderd at {date}</Alert>
             <SimpleGrid cols={3} spacing="xl">
               {data &&
                 data.map((post) => {
