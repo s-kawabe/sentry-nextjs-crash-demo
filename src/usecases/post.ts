@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 
@@ -21,22 +22,24 @@ const sleep = (ms: number) => {
 
 // safe fatcher
 export const getPosts = async (apiClients: ApiClients): Promise<Post[]> => {
-  await sleep(3000)
-  const res = await apiClients.apiClient.get<Post[]>('/posts')
+  const res = await apiClients.apiClient.get<Post[]>('/posts?_limit=10').then((await sleep(3000)) as any)
   return res.data
 }
 
 export const getApiRoutePosts = async (apiClients: ApiClients): Promise<Post[]> => {
-  await sleep(1000)
-  const res = await apiClients.apiRoutesClient.get<Post[]>('/posts')
+  const res = await apiClients.apiRoutesClient.get<Post[]>('/posts').then((await sleep(3000)) as any)
   return res.data
 }
 
 export const usePosts = (): UseQueryResult<Post[], unknown> => {
   const apiClient = useApiClients()
-  return useQuery([queryKeys.posts, 'api'], () => {
-    return getPosts(apiClient)
-  })
+  return useQuery(
+    [queryKeys.posts, 'api'],
+    () => {
+      return getPosts(apiClient)
+    },
+    { suspense: true }
+  )
 }
 
 export const useApiRoutePosts = (): UseQueryResult<Post[], unknown> => {
@@ -46,17 +49,17 @@ export const useApiRoutePosts = (): UseQueryResult<Post[], unknown> => {
   })
 }
 
-type RenderPattern = 'client' | 'server(API Routes)' | 'server(SSR, SSG, ISR)'
+export type RenderPattern = 'client' | 'server(API Routes)' | 'server(SSR, SSG, ISR)'
 
 // artificially error fetcher
 export const getPostsDangerous = async (apiClients: ApiClients, context: RenderPattern): Promise<Post[]> => {
   if (Math.random() <= 0.5) throw new Error(`something went wrong :( - get posts error, context: ${context}`)
-  const res = await apiClients.apiClient.get<Post[]>('/posts')
+  const res = await apiClients.apiClient.get<Post[]>('/posts').then((await sleep(3000)) as any)
   return res.data
 }
 
 export const getApiRoutePostsDangerous = async (apiClients: ApiClients, context: RenderPattern): Promise<Post[]> => {
-  const res = await apiClients.apiClient.get<Post[]>(`/postsUnsafe?context=${context}`)
+  const res = await apiClients.apiClient.get<Post[]>(`/postsUnsafe?context=${context}`).then((await sleep(3000)) as any)
   return res.data
 }
 
@@ -71,7 +74,7 @@ export const usePostsDangerous = (): UseQueryResult<Post[], unknown> => {
     },
     {
       onError: (error) => {
-        console.log(error)
+        console.error(error)
       },
     }
   )
@@ -88,7 +91,7 @@ export const useApiRoutePostsDangerous = (): UseQueryResult<Post[], unknown> => 
     },
     {
       onError: (error) => {
-        console.log(error)
+        console.error(error)
       },
     }
   )
