@@ -1,12 +1,12 @@
 import 'nprogress/nprogress.css'
 import '@/styles/global.css'
 
-import { Alert, Center, Loader, MantineProvider } from '@mantine/core'
+import { Alert, Center, MantineProvider } from '@mantine/core'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { QueryClient, QueryClientProvider, QueryErrorResetBoundary } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import nprogress from 'nprogress'
-import { Suspense, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { AppShell } from '@/components/layout/AppShell'
 import { ApiClientContext, createApiClient } from '@/libs/jspApiClient'
@@ -60,15 +60,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     }
                     onReset={reset}
                   >
-                    <Suspense
-                      fallback={
-                        <Center className="flex-col  items-center w-auto h-full">
-                          <Loader variant="dots" size={'xl'} />
-                        </Center>
-                      }
-                    >
-                      <Component {...pageProps} />
-                    </Suspense>
+                    <Component {...pageProps} />
                   </ErrorBoundary>
                 )
               }}

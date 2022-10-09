@@ -31,22 +31,31 @@ export const getApiRoutePosts = async (apiClients: ApiClients): Promise<Post[]> 
   return res.data
 }
 
-export const usePosts = (): UseQueryResult<Post[], unknown> => {
+export const usePosts = (isMounted: boolean): UseQueryResult<Post[], unknown> => {
   const apiClient = useApiClients()
   return useQuery(
     [queryKeys.posts, 'api'],
     () => {
       return getPosts(apiClient)
     },
-    { suspense: true }
+    {
+      enabled: isMounted,
+    }
   )
 }
 
-export const useApiRoutePosts = (): UseQueryResult<Post[], unknown> => {
+// unused
+export const useApiRoutePosts = (isMounted: boolean): UseQueryResult<Post[], unknown> => {
   const apiClient = useApiClients()
-  return useQuery([queryKeys.posts, 'api routes'], () => {
-    return getApiRoutePosts(apiClient)
-  })
+  return useQuery(
+    [queryKeys.posts, 'api routes'],
+    () => {
+      return getApiRoutePosts(apiClient)
+    },
+    {
+      enabled: isMounted,
+    }
+  )
 }
 
 export type RenderPattern = 'client' | 'server(API Routes)' | 'server(SSR, SSG, ISR)'
@@ -63,7 +72,7 @@ export const getApiRoutePostsDangerous = async (apiClients: ApiClients, context:
   return res.data
 }
 
-export const usePostsDangerous = (): UseQueryResult<Post[], unknown> => {
+export const usePostsDangerous = (isMounted: boolean): UseQueryResult<Post[], unknown> => {
   const apiClient = useApiClients()
   return useQuery(
     [queryKeys.posts, 'unsafe api'],
@@ -76,11 +85,12 @@ export const usePostsDangerous = (): UseQueryResult<Post[], unknown> => {
       onError: (error) => {
         console.error(error)
       },
+      enabled: isMounted,
     }
   )
 }
 
-export const useApiRoutePostsDangerous = (): UseQueryResult<Post[], unknown> => {
+export const useApiRoutePostsDangerous = (isMounted: boolean): UseQueryResult<Post[], unknown> => {
   const apiClient = useApiClients()
   return useQuery(
     [queryKeys.posts, 'unsafe api routes'],
@@ -93,6 +103,7 @@ export const useApiRoutePostsDangerous = (): UseQueryResult<Post[], unknown> => 
       onError: (error) => {
         console.error(error)
       },
+      enabled: isMounted,
     }
   )
 }

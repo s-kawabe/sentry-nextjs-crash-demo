@@ -1,21 +1,17 @@
-import { Alert, Center, SimpleGrid } from '@mantine/core'
+import { Alert, Center, Loader } from '@mantine/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
-import { Card } from '@/components/ui/Card'
+import { PostsGrid } from '@/components/post/PostsGrid'
 import { day } from '@/libs/day'
-import { usePosts } from '@/usecases/post'
 
 const TopPage: NextPage = () => {
-  const { data } = usePosts()
   const [date, setDate] = useState('')
 
   useEffect(() => {
     setDate(day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'))
   }, [])
-
-  console.log(data)
 
   return (
     <>
@@ -23,17 +19,18 @@ const TopPage: NextPage = () => {
         <title>Sentry Playground</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Center className="flex-col gap-4 w-auto h-auto">
-        <>
+      <Suspense
+        fallback={
+          <Center className="flex-col items-center w-auto h-full">
+            <Loader variant="dots" size={'xl'} />
+          </Center>
+        }
+      >
+        <Center className="flex-col gap-4 w-auto h-auto">
           <Alert>This page CSR, renderd at {date}</Alert>
-          <SimpleGrid cols={3} spacing="xl">
-            {data &&
-              data.map((post) => {
-                return <Card key={post.id} {...post} />
-              })}
-          </SimpleGrid>
-        </>
-      </Center>
+          <PostsGrid type="safe-csr" />
+        </Center>
+      </Suspense>
     </>
   )
 }
