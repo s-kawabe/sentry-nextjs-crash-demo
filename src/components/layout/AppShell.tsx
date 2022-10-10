@@ -68,8 +68,8 @@ export const AppShell: FC<Props> = ({ children }) => {
         <br />
         7. getServerSideProps → API → failure → browser <br />
         8. getServerSideProps → API Routes → API → failure → browser <br />
-        9. getStaticProps → API → failure → browser <br />
-        10. getStaticProps(ISR) → API → failure → browser <br />
+        {/* 9. getStaticProps → API → failure → browser <br /> */}
+        {/* 10. getStaticProps(ISR) → API → failure → browser <br /> */}
       </Modal>
     </>
   )
@@ -119,7 +119,7 @@ const Buttons: FC = () => {
           8. unsafe-ssr(via api routes)
         </NavButton>
       </Link>
-      <Link href={'/unsafe-ssg'}>
+      {/* <Link href={'/unsafe-ssg'}>
         <NavButton targetPath={'/unsafe-ssg'} className="w-full">
           9. unsafe-ssg
         </NavButton>
@@ -128,7 +128,7 @@ const Buttons: FC = () => {
         <NavButton targetPath={'/unsafe-isr'} className="w-full">
           10. unsafe-isr
         </NavButton>
-      </Link>
+      </Link> */}
     </Group>
   )
 }

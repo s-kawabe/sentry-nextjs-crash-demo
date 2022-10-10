@@ -8,6 +8,7 @@
     "path": "pathpida --ignorePath .gitignore --watch",
     "build": "next build",
     "start": "next start",
+    "tsc": "tsc",
     "lint": "next lint",
     "lint:eslint": "eslint --cache .",
     "lint:prettier": "prettier --check .",
