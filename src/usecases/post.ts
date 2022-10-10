@@ -58,11 +58,7 @@ export const useApiRoutePosts = (isMounted: boolean): UseQueryResult<Post[], unk
   )
 }
 
-export type RenderPattern =
-  | 'client'
-  | 'server(API Routes)'
-  | 'server(SSR, SSG, ISR)'
-  | 'server(SSR, SSG, ISR & API Routes)'
+export type RenderPattern = 'client' | 'server(API Routes)' | 'server(SSR)' | 'server(SSR & API Routes)'
 
 // artificially error fetcher
 export const getPostsDangerous = async (apiClients: ApiClients, context: RenderPattern): Promise<Post[]> => {

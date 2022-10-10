@@ -37,7 +37,7 @@ const TopPage: NextPage<Props> = ({ date, data }) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const apiClient = createApiClient()
-  const data = await getApiRoutePostsDangerous(apiClient, 'server(SSR, SSG, ISR & API Routes)')
+  const data = await getApiRoutePostsDangerous(apiClient, 'server(SSR & API Routes)')
 
   return {
     props: {
