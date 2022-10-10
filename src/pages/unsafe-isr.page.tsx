@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/Card'
 import { day } from '@/libs/day'
 import { createApiClient } from '@/libs/jspApiClient'
 import type { Post } from '@/usecases/post'
-import { getPosts } from '@/usecases/post'
+import { getPostsDangerous } from '@/usecases/post'
 
 type Props = {
   date: string
@@ -37,7 +37,7 @@ const TopPage: NextPage<Props> = ({ data, date }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const apiClient = createApiClient()
-  const data = await getPosts(apiClient)
+  const data = await getPostsDangerous(apiClient, 'server(SSR, SSG, ISR)')
   return {
     props: {
       date: day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'),
