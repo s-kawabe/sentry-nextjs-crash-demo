@@ -28,6 +28,7 @@ const CustomErrorComponent: NextPage<ErrorProps> = ({ statusCode }) => {
 
   // 🙆‍♂️ status codeごとにカスタムのページがある場合はここで分岐させてそれを表示させる？
 
+  console.log('execute _error.page.tsx inner getInitialProps! statusCode: ', statusCode)
   return <NextErrorComponent statusCode={statusCode} />
 }
 
@@ -37,6 +38,7 @@ CustomErrorComponent.getInitialProps = async (context) => {
   await Sentry.captureUnderscoreErrorException(context)
 
   // This will contain the status code of the response
+  console.log('execute _error.page.tsx inner getInitialProps!')
   return NextErrorComponent.getInitialProps(context)
 }
 

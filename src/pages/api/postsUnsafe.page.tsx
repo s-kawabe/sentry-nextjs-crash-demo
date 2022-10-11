@@ -8,12 +8,16 @@ const getPostsUnsafeHandler = async (req: NextApiRequest, res: NextApiResponse) 
 
   const { context } = req.query
 
-  if (Math.random() <= 0.5) throw new Error(`something went wrong :( - get posts error, context: ${context}`)
+  if (Math.random() <= 0.5) {
+    res.status(500)
+    throw new Error(`something went wrong :( - get posts error, context: ${context}`)
+  }
 
   const apiClients = createApiClient()
   const posts = await getPosts(apiClients)
 
-  res.status(500).json(posts)
+  res.status(200).json(posts)
+  return
 }
 
 export default getPostsUnsafeHandler
