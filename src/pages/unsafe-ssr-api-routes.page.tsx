@@ -36,14 +36,19 @@ const TopPage: NextPage<Props> = ({ date, data }) => {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const apiClient = createApiClient()
-  const data = await getApiRoutePostsDangerous(apiClient, 'server(SSR-API-Routes)')
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const apiClient = createApiClient()
+    const data = await getApiRoutePostsDangerous(apiClient, 'server(SSR-API-Routes)')
 
-  return {
-    props: {
-      date: day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'),
-      data,
-    },
+    return {
+      props: {
+        date: day().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss'),
+        data,
+      },
+    }
+  } catch (err) {
+    throw err
   }
 }
 

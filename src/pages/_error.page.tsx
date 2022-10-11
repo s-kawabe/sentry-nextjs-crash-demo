@@ -26,7 +26,8 @@ const CustomErrorComponent: NextPage<ErrorProps> = ({ statusCode }) => {
   // compensate for https://github.com/vercel/next.js/issues/8592
   // Sentry.captureUnderscoreErrorException(props);
 
-  // 🙆‍♂️ status codeごとにカスタムのページがある場合はここで分岐させてそれを表示させる？
+  // 🙆‍♂️ Next.12.2.1以前ではこの中でもcaptureUnderscoreErrorExceptionを呼ぶ必要がある
+  // 🙆‍♂️ status codeごとにカスタムのエラーページがある場合はここで分岐させてそれを表示させる？
 
   console.log('execute _error.page.tsx inner getInitialProps! statusCode: ', statusCode)
   return <NextErrorComponent statusCode={statusCode} />
