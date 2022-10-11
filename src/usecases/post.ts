@@ -68,7 +68,9 @@ export const getPostsDangerous = async (apiClients: ApiClients, context: RenderP
 }
 
 export const getApiRoutePostsDangerous = async (apiClients: ApiClients, context: RenderPattern): Promise<Post[]> => {
-  const res = await apiClients.apiClient.get<Post[]>(`/postsUnsafe?context=${context}`).then((await sleep(3000)) as any)
+  const res = await apiClients.apiRoutesClient
+    .get<Post[]>(`/postsUnsafe?context=${context}`)
+    .then((await sleep(3000)) as any)
   return res.data
 }
 

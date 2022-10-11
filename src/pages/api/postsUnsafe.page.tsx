@@ -6,7 +6,7 @@ import { getPosts } from '@/usecases/post'
 const getPostsUnsafeHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('🅰️ executed get posts unsafe api route :) ')
 
-  const { context } = req.headers
+  const { context } = req.query
 
   if (Math.random() <= 0.5) throw new Error(`something went wrong :( - get posts error, context: ${context}`)
 

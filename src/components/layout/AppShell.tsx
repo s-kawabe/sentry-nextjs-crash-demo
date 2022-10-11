@@ -78,6 +78,12 @@ export const AppShell: FC<Props> = ({ children }) => {
 const Buttons: FC = () => {
   return (
     <Group spacing={'md'} className="flex flex-col">
+      <Link href={'/sentry_sample_error'}>
+        <NavButton targetPath={'/sentry_sample_error'} className="w-full">
+          sentry_sample_error
+        </NavButton>
+      </Link>
+
       <Link href={'/safe-csr'}>
         <NavButton targetPath={'/safe-csr'} className="w-full">
           1. safe-csr
